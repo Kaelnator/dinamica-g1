@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las Tres Leyes de Newton: El Truco del Mantel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-container {
+            max-width: 1000px;
+            width: 90%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        .slide h2 {
+            color: #34495e;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .slide h3 {
+            color: #e74c3c;
+            font-size: 1.5rem;
+            margin: 20px 0 15px 0;
+            border-left: 4px solid #e74c3c;
+            padding-left: 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .slide ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .experiment-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .law-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .physics-formula {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            text-align: center;
+            margin: 15px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #34495e;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .conclusion-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .team-info {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .visual-demo {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">8</span>
+        </div>
+
+        <!-- Slide 1: Título -->
+        <div class="slide active">
+            <h1>Las Tres Leyes de Newton</h1>
+            <h2>El Truco del Mantel: Física en Acción</h2>
+            
+            <div class="team-info">
+                <h3>Situación Analizada:</h3>
+                <p><strong>¿Cómo es posible quitar un mantel rápidamente sin que los objetos encima se caigan?</strong></p>
+                <p>Este fenómeno cotidiano es una perfecta demostración de las tres leyes fundamentales de Newton trabajando en conjunto.</p>
+            </div>
+
+            <div class="visual-demo">
+                <h3>🍽️ Demostración Visual</h3>
+                <p>Imagina una mesa con platos, vasos y cubiertos sobre un mantel. Con la técnica correcta, podemos retirar el mantel sin que nada se mueva.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Primera Ley de Newton -->
+        <div class="slide">
+            <h2>Primera Ley de Newton: Ley de la Inercia</h2>
+            
+            <div class="law-box">
+                <h3>📐 Enunciado:</h3>
+                <p>"Un objeto en reposo permanece en reposo, y un objeto en movimiento permanece en movimiento a velocidad constante, a menos que una fuerza externa actúe sobre él."</p>
+                
+                <div class="physics-formula">
+                    ΣF = 0  →  v = constante
+                </div>
+            </div>
+
+            <h3>🔍 Aplicación en el Truco del Mantel:</h3>
+            <ul>
+                <li><strong>Los objetos están en reposo:</strong> Platos, vasos y cubiertos permanecen inmóviles sobre la mesa</li>
+                <li><strong>Tendencia a mantener su estado:</strong> Los objetos "quieren" seguir en reposo debido a su inercia</li>
+                <li><strong>Resistencia al movimiento:</strong> Mientras menos fuerza se aplique sobre ellos, más probable es que permanezcan en su lugar</li>
+            </ul>
+
+            <div class="experiment-box">
+                <h3>💡 Observación Clave:</h3>
+                <p>Si el mantel se mueve muy rápido, los objetos no tienen tiempo suficiente para "reaccionar" al movimiento y permanecen en su posición original por inercia.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Segunda Ley de Newton -->
+        <div class="slide">
+            <h2>Segunda Ley de Newton: Ley de la Fuerza</h2>
+            
+            <div class="law-box">
+                <h3>📐 Enunciado:</h3>
+                <p>"La aceleración de un objeto es directamente proporcional a la fuerza neta aplicada e inversamente proporcional a su masa."</p>
+                
+                <div class="physics-formula">
+                    F = m × a
+                </div>
+            </div>
+
+            <h3>🔍 Aplicación en el Truco del Mantel:</h3>
+            <ul>
+                <li><strong>Fuerza de fricción:</strong> Existe fricción entre el mantel y los objetos (F = μ × N)</li>
+                <li><strong>Tiempo de contacto:</strong> Al mover el mantel rápidamente, el tiempo de aplicación de la fuerza es mínimo</li>
+                <li><strong>Aceleración limitada:</strong> Los objetos experimentan poca aceleración debido al corto tiempo de contacto</li>
+            </ul>
+
+            <div class="experiment-box">
+                <h3>🧮 Análisis Matemático:</h3>
+                <p><strong>Impulso = F × Δt</strong></p>
+                <p>Si Δt es muy pequeño (movimiento rápido), el impulso también es pequeño, resultando en poca aceleración de los objetos.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Tercera Ley de Newton -->
+        <div class="slide">
+            <h2>Tercera Ley de Newton: Ley de Acción y Reacción</h2>
+            
+            <div class="law-box">
+                <h3>📐 Enunciado:</h3>
+                <p>"Para cada acción existe una reacción igual y opuesta."</p>
+                
+                <div class="physics-formula">
+                    F₁₂ = -F₂₁
+                </div>
+            </div>
+
+            <h3>🔍 Aplicación en el Truco del Mantel:</h3>
+            <ul>
+                <li><strong>Acción:</strong> El mantel ejerce fuerza de fricción sobre los objetos hacia la dirección del movimiento</li>
+                <li><strong>Reacción:</strong> Los objetos ejercen una fuerza igual y opuesta sobre el mantel</li>
+                <li><strong>Equilibrio de fuerzas:</strong> Estas fuerzas se cancelan cuando el movimiento es suficientemente rápido</li>
+            </ul>
+
+            <div class="experiment-box">
+                <h3>⚖️ Balance de Fuerzas:</h3>
+                <p>La fuerza que tú aplicas al mantel debe superar la fuerza de reacción de los objetos. Al hacerlo rápidamente, minimizas el efecto de esta reacción.</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Análisis Completo del Fenómeno -->
+        <div class="slide">
+            <h2>Análisis Completo del Fenómeno</h2>
+            
+            <h3>🔬 ¿Por qué funciona el truco?</h3>
+            
+            <div class="step-number">1</div><strong>Inercia dominante:</strong> Los objetos resisten el cambio de movimiento<br><br>
+            
+            <div class="step-number">2</div><strong>Fricción limitada:</strong> El contacto mantel-objeto es breve<br><br>
+            
+            <div class="step-number">3</div><strong>Tiempo crítico:</strong> La velocidad debe ser mayor que el tiempo de reacción<br><br>
+
+            <div class="experiment-box">
+                <h3>⚡ Condiciones para el éxito:</h3>
+                <ul>
+                    <li><strong>Velocidad alta:</strong> Movimiento rápido y decidido</li>
+                    <li><strong>Superficie lisa:</strong> Mantel sin arrugas</li>
+                    <li><strong>Objetos estables:</strong> Centro de gravedad bajo</li>
+                    <li><strong>Dirección horizontal:</strong> Movimiento paralelo a la mesa</li>
+                </ul>
+            </div>
+
+            <div class="physics-formula">
+                Éxito = (Velocidad alta × Tiempo corto) ÷ Fricción mínima
+            </div>
+        </div>
+
+        <!-- Slide 6: Experimento Paso a Paso -->
+        <div class="slide">
+            <h2>🧪 Cómo Realizar el Experimento</h2>
+            
+            <div class="visual-demo">
+                <h3>Materiales Necesarios:</h3>
+                <p>• Mesa estable • Mantel liso • Objetos ligeros (platos plásticos, vasos vacíos)</p>
+            </div>
+
+            <h3>📋 Procedimiento:</h3>
+            <ol>
+                <li><strong>Preparación:</strong> Coloca el mantel sobre la mesa dejando suficiente tela colgando</li>
+                <li><strong>Posición de objetos:</strong> Ubica los objetos cerca del centro, lejos del borde</li>
+                <li><strong>Posición corporal:</strong> Párate firme, agarra el mantel con ambas manos</li>
+                <li><strong>Movimiento:</strong> Tira horizontal y rápidamente, sin dudar</li>
+                <li><strong>Observación:</strong> Los objetos deben permanecer en su lugar</li>
+            </ol>
+
+            <div class="experiment-box">
+                <h3>⚠️ Precauciones de Seguridad:</h3>
+                <p>Usar objetos irrompibles para la práctica. Realizar sobre superficie blanda inicialmente.</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Aplicaciones en la Vida Real -->
+        <div class="slide">
+            <h2>🌍 Aplicaciones de las Leyes de Newton</h2>
+            
+            <h3>Situaciones Similares en la Vida Cotidiana:</h3>
+            
+            <div class="law-box">
+                <h3>🚗 Transporte:</h3>
+                <ul>
+                    <li><strong>Frenado brusco:</strong> Los pasajeros continúan hacia adelante por inercia</li>
+                    <li><strong>Curvas rápidas:</strong> El cuerpo se inclina hacia el exterior</li>
+                </ul>
+            </div>
+
+            <div class="experiment-box">
+                <h3>🏠 En el Hogar:</h3>
+                <ul>
+                    <li><strong>Sacudir alfombras:</strong> La suciedad se desprende por inercia</li>
+                    <li><strong>Abrir frascos:</strong> Aplicación de torque y fricción</li>
+                </ul>
+            </div>
+
+            <div class="conclusion-highlight">
+                <h3>🎯 Importancia Práctica:</h3>
+                <p>Comprender estas leyes nos ayuda a predecir y controlar el movimiento en múltiples situaciones de la vida diaria, desde caminar hasta conducir vehículos.</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Conclusiones -->
+        <div class="slide">
+            <h2>📝 Conclusiones</h2>
+            
+            <div class="conclusion-highlight">
+                <h3>🎯 Lo que hemos demostrado:</h3>
+                <p>El truco del mantel es una perfecta ilustración de cómo las tres leyes de Newton trabajan simultáneamente en un fenómeno cotidiano.</p>
+            </div>
+
+            <h3>🔑 Puntos Clave:</h3>
+            <ul>
+                <li><strong>Primera Ley:</strong> La inercia mantiene los objetos en reposo</li>
+                <li><strong>Segunda Ley:</strong> La fuerza limitada produce poca aceleración</li>
+                <li><strong>Tercera Ley:</strong> Las fuerzas de acción-reacción se equilibran</li>
+            </ul>
+
+            <div class="experiment-box">
+                <h3>💭 Reflexión:</h3>
+                <p>Este experimento demuestra que la física no es solo teoría abstracta, sino que explica fenómenos observables y aplicables en nuestra vida diaria. Las leyes de Newton, formuladas hace más de 300 años, siguen siendo fundamentales para entender el mundo que nos rodea.</p>
+            </div>
+
+            <div class="team-info">
+                <h3>🤝 Trabajo Colaborativo:</h3>
+                <p>Esta presentación es resultado del análisis grupal y la aplicación práctica de conceptos físicos fundamentales.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 8;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide;
+            document.getElementById('total-slides').textContent = totalSlides;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
